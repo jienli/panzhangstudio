@@ -1,0 +1,4 @@
+.DS_Store
+# Original photos stay on this computer; only the web-sized copies in site/images are published.
+photos/
+.claude/

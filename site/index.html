@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zhang Pan · 张磐</title>
+  <meta name="description" content="Traditional Chinese painting by Zhang Pan, from the countryside of Maine.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Zhang Pan — home">
+      <span class="seal" aria-hidden="true"><span>张</span><span>磐</span></span>
+      <span class="brand-name" data-i18n="name"></span>
+    </a>
+    <nav class="nav">
+      <a href="#gallery" data-i18n="navGallery"></a>
+      <a href="#about" data-i18n="navAbout"></a>
+      <button class="lang-toggle" type="button" aria-label="Switch language">
+        <span data-lang="zh">中</span><span class="sep">/</span><span data-lang="en">EN</span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow" data-i18n="eyebrow"></p>
+        <h1>
+          <span class="hero-zh">张磐</span>
+          <span class="hero-en">Zhang Pan</span>
+        </h1>
+        <p class="tagline" data-i18n="tagline"></p>
+        <a class="cta" href="#gallery" data-i18n="cta"></a>
+      </div>
+      <figure class="hero-art">
+        <button class="hero-img-btn" type="button"><img id="hero-img" alt=""></button>
+        <figcaption id="hero-caption"></figcaption>
+      </figure>
+      <p class="vertical-poem" aria-hidden="true">笔墨写心 · 山水寄情</p>
+    </section>
+
+    <section id="gallery" class="gallery-section">
+      <div class="section-head">
+        <h2><span data-i18n="galleryTitle"></span></h2>
+        <div class="filters" role="group" aria-label="Filter"></div>
+      </div>
+      <div class="gallery" id="gallery-grid"></div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="about-mark" aria-hidden="true">缅因</div>
+      <div class="about-body">
+        <h2 data-i18n="aboutTitle"></h2>
+        <div data-i18n-html="aboutText"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="contact"><span data-i18n="contactLead"></span> <a id="contact-link" data-i18n="contactLink"></a></p>
+    <p class="copyright">© <span id="year"></span> 张磐 Zhang Pan · <span data-i18n="place"></span></p>
+  </footer>
+
+  <div class="viewer" id="viewer" hidden>
+    <div class="viewer-backdrop" data-close></div>
+    <div class="viewer-panel" role="dialog" aria-modal="true" aria-labelledby="v-title">
+      <button class="v-close" type="button" data-close aria-label="Close">×</button>
+      <div class="v-stage" id="v-stage">
+        <img id="v-img" alt="">
+        <p class="v-hint" data-i18n="zoomHint"></p>
+      </div>
+      <aside class="v-info">
+        <p class="v-cat" id="v-cat"></p>
+        <h3 id="v-title"></h3>
+        <p class="v-subtitle" id="v-subtitle"></p>
+        <dl class="v-meta">
+          <dt data-i18n="date"></dt><dd id="v-date"></dd>
+          <dt data-i18n="medium"></dt><dd id="v-medium"></dd>
+          <dt data-i18n="size"></dt><dd id="v-size"></dd>
+        </dl>
+        <p class="v-note" id="v-note"></p>
+        <button class="v-framed" id="v-framed" type="button"></button>
+        <a class="v-inquire" id="v-inquire" data-i18n="inquire"></a>
+        <div class="v-nav">
+          <button type="button" id="v-prev" aria-label="Previous">←</button>
+          <span id="v-count"></span>
+          <button type="button" id="v-next" aria-label="Next">→</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="works.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
