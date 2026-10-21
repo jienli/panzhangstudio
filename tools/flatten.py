@@ -54,6 +54,14 @@ def paper_mask(srgb, size):
     rough = blur(rough, size * 0.02)
 
     relative = lum / np.maximum(rough, 1e-3)
+
+    # Judge color relative to the paper's own tint, so warm or cool paper
+    # (or a camera's white balance) isn't mistaken for paint.
+    bright = relative > 0.9
+    if bright.sum() > 100:
+        tint = np.median(srgb[bright], axis=0)
+        balanced = srgb / np.maximum(tint, 1e-3) * tint.mean()
+        chroma = balanced.max(axis=2) - balanced.min(axis=2)
     mask = ((relative > 0.82) & (chroma < 0.10)).astype(np.float32)
 
     # Pull back from painted edges so soft washes aren't mistaken for paper.
@@ -109,7 +117,7 @@ def crease_steps(linear, light, mask, size, crease):
     return 1.0 + (med - 1.0) * np.clip(coverage * 1.5, 0, 1)
 
 
-def flatten(srgb, strength=1.0, detail=3.0, crease=1.0, work_size=2400):
+def flatten(srgb, strength=1.0, detail=3.0, crease=1.0, paper_color=None, work_size=2400):
     h, w = srgb.shape[:2]
     scale = min(1.0, work_size / max(h, w))
     small = cv2.resize(srgb, (round(w * scale), round(h * scale)), interpolation=cv2.INTER_AREA)
@@ -125,9 +133,15 @@ def flatten(srgb, strength=1.0, detail=3.0, crease=1.0, work_size=2400):
     # Target: the tone of the best-lit paper in this photo, so the paper keeps
     # its own color rather than being bleached to pure white.
     paper = srgb_to_linear(small)[mask > 0.5]
-    target = np.percentile(paper, 92, axis=0) if len(paper) > 500 else light_small.reshape(-1, 3).max(axis=0)
+    measured = np.percentile(paper, 92, axis=0) if len(paper) > 500 else light_small.reshape(-1, 3).max(axis=0)
+    target = measured
+    if paper_color is not None:
+        # White balance + exposure in one step: map the paper to a chosen tone.
+        # A single color shift for the whole image, so paint keeps its relation to the paper.
+        target = srgb_to_linear(np.asarray(paper_color, dtype=np.float32) / 255.0)
 
-    gain = (target / np.maximum(light, 1e-4)) ** strength
+    # Local evening-out (scaled by strength; 0 = none) times the global tone shift.
+    gain = (measured / np.maximum(light, 1e-4)) ** strength * (target / measured)
     out = srgb_to_linear(srgb) * gain
     return linear_to_srgb(out), mask, light_small, target
 
@@ -139,6 +153,7 @@ def main():
     p.add_argument("--strength", type=float, default=1.0, help="0 = unchanged, 1 = fully even lighting")
     p.add_argument("--detail", type=float, default=3.0, help="higher follows smaller creases (0.5-4)")
     p.add_argument("--crease", type=float, default=1.0, help="fold-edge removal; 0 = off, 1 = default")
+    p.add_argument("--paper", help="set the paper tone as hex, e.g. efebe2 (white balance + exposure)")
     p.add_argument("--rotate", type=int, default=0, choices=[0, 90, 180, 270], help="clockwise degrees")
     p.add_argument("--debug", help="also write the paper mask and lighting map with this path prefix")
     a = p.parse_args()
@@ -151,7 +166,8 @@ def main():
         bgr = cv2.rotate(bgr, rot[a.rotate])
     srgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
 
-    out, mask, light, target = flatten(srgb, a.strength, a.detail, a.crease)
+    paper = tuple(int(a.paper[i:i + 2], 16) for i in (0, 2, 4)) if a.paper else None
+    out, mask, light, target = flatten(srgb, a.strength, a.detail, a.crease, paper)
     cv2.imwrite(a.output, cv2.cvtColor((out * 255 + 0.5).astype(np.uint8), cv2.COLOR_RGB2BGR),
                 [cv2.IMWRITE_JPEG_QUALITY, 95])
     if a.debug:

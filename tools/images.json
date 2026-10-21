@@ -1,0 +1,23 @@
+{
+  "paper": "efebe2",
+  "default_trim": 0.015,
+  "works": [
+    { "id": "luoshen-peony",       "src": "photos/Oct21_2026_addition/18525.JPG" },
+    { "id": "crimson-peony",       "src": "photos/Oct21_2026_addition/18527.JPG", "rotate": 270, "trim": [0.012, 0.035, 0.012, 0.05] },
+    { "id": "bamboo-branch-song",  "src": "photos/Oct21_2026_addition/18528.JPG" },
+    { "id": "spring-everywhere",   "src": "photos/Oct21_2026_addition/18529.JPG", "rotate": 270 },
+    { "id": "red-plum",            "src": "photos/Oct21_2026_addition/18530.JPG" },
+    { "id": "winter-plum",         "src": "photos/Oct21_2026_addition/18531.JPG", "rotate": 180 },
+    { "id": "a-branch-of-spring",  "src": "photos/Oct21_2026_addition/18532.JPG" },
+    { "id": "peerless-beauty-1",   "src": "photos/Oct21_2026_addition/18533.JPG", "rotate": 180 },
+    { "id": "peerless-beauty-2",   "src": "photos/Oct21_2026_addition/18534.JPG" },
+    { "id": "flowers-in-season-1", "src": "photos/Oct21_2026_addition/18535.JPG" },
+    { "id": "flowers-in-season-2", "src": "photos/Oct21_2026_addition/18536.JPG" },
+
+    { "id": "peony-2024",          "src": "photos/503168690_4046881525566354_2410894879458283111_n.jpg", "box": [236, 249, 483, 563] },
+    { "id": "peony-full-bloom",    "src": "photos/db6befadf78329b371705ed358444b03.jpg", "trim": [0.025, 0.015, 0.015, 0.015] },
+    { "id": "spring-abundance",    "src": "photos/440ab86a166a5766eec8eb2eb75bc8ca.jpg" },
+    { "id": "trees-on-rock",       "src": "photos/raw/IMG_9666.jpg", "strength": 0.5, "detail": 1.0, "crease": 0,
+      "note": "photographed behind glare; full correction lightened the pale wash on the rock" }
+  ]
+}

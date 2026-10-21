@@ -103,15 +103,23 @@ function applyLang() {
   if (current >= 0) renderViewer();
 }
 
+/* ---------- frame ---------- */
+// Walnut frame + mat drawn around a plain image (styles in styles.css).
+// Each frame shows a different part of the wood texture, like real lumber.
+function framed(src, alt, i, lazy) {
+  const ox = -((i * 377) % 1024), oy = -((i * 53) % 128);
+  return `<div class="framed" style="--ox:${ox}px;--oy:${oy}px">
+    <div class="side top"></div><div class="side bottom"></div><div class="side left"></div><div class="side right"></div>
+    <div class="mat"><div class="bevel"><img src="${src}" alt="${alt}"${lazy ? ' loading="lazy"' : ""}></div></div></div>`;
+}
+
 /* ---------- hero ---------- */
 function renderHero() {
   const i = Math.max(0, WORKS.findIndex((w) => w.featured));
   const w = WORKS[i];
-  const img = $("#hero-img");
-  img.src = w.image;
-  img.alt = w.title[lang];
+  $("#hero-frame").innerHTML = framed(w.thumb || w.image, w.title[lang], i, false);
   $("#hero-caption").textContent = lang === "zh" ? `《${w.title.zh}》` : w.title.en;
-  $(".hero-img-btn").onclick = () => openWork(i);
+  $("#hero-frame").onclick = () => openWork(i);
 }
 
 /* ---------- gallery ---------- */
@@ -143,7 +151,7 @@ function renderGallery() {
       ? `<span class="zh">${w.title.zh}</span>`
       : `<span class="zh">${w.title.zh}</span>${w.title.en}`;
     card.innerHTML = `
-      <div class="card-img"><img src="${w.thumb || w.image}" alt="${w.title[lang]}" loading="lazy"></div>
+      ${framed(w.thumb || w.image, w.title[lang], i, true)}
       <div class="card-cap"><span class="card-title">${title}</span><span class="card-year">${year}</span></div>`;
     card.onclick = () => openWork(i);
     grid.appendChild(card);
