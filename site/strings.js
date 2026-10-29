@@ -1,0 +1,73 @@
+// Page wording in both languages. Used by the browser and by tools/build.js.
+
+const STRINGS = {
+  en: {
+    name: "Zhang Pan",
+    navGallery: "Paintings",
+    navAbout: "About",
+    eyebrow: "Chinese brush painting · Maine",
+    tagline: "Ink, color and quiet attention: peonies, branches and stones, painted in the old way in the New England countryside.",
+    cta: "View the paintings",
+    galleryTitle: "Paintings",
+    all: "All",
+    aboutTitle: "About the artist",
+    aboutText: `
+      <p>Zhang Pan has loved art for as long as she can remember. As a child she dreamed of becoming a painter, and for many years that wish waited patiently in the background of a busy life.</p>
+      <p>It was Maine that finally called it out: the rocky coast and tall pines, the long snows and sudden springs, the way the light changes from one season to the next. A few years ago she picked up the brush and began studying traditional Chinese painting in earnest.</p>
+      <p>Today she paints at home in the Maine countryside, working in ink and color on xuan paper: peonies and branches, trees and stones. It is an old art practiced in a new place, with the brushwork of China and the light of New England.</p>`,
+    contactLead: "Interested in a painting, or just want to say hello?",
+    contactLink: "Write to us",
+    place: "Maine, USA",
+    date: "Date",
+    medium: "Medium",
+    size: "Size",
+    tbd: "to be added",
+    zoomHint: "Click the painting to look closer",
+    showFramed: "See it framed",
+    showPainting: "Back to the painting",
+    inquire: "Ask about this piece",
+    close: "Close",
+    prev: "Previous painting",
+    next: "Next painting",
+    allPaintings: "All paintings",
+    switchLang: "中文",
+    // <head> text for search results and link previews
+    homeTitle: "Zhang Pan 张磐 · Chinese Brush Painting from Maine",
+    homeDescription: "Traditional Chinese brush paintings by Zhang Pan: peonies, plum blossoms, landscapes and calligraphy in ink and color on xuan paper, painted in the Maine countryside.",
+    workTitleSuffix: "Zhang Pan 张磐",
+  },
+  zh: {
+    name: "张磐",
+    navGallery: "画作",
+    navAbout: "关于",
+    eyebrow: "中国画 · 缅因",
+    tagline: "以笔墨丹青，静观万物。在新英格兰的乡间，用古老的方式描绘牡丹、枝叶与山石。",
+    cta: "观赏画作",
+    galleryTitle: "画作",
+    all: "全部",
+    aboutTitle: "关于画家",
+    aboutText: `
+      <p>张磐自幼钟爱艺术，儿时便怀揣着一个画画的梦。多年来，这个心愿在忙碌的生活中静静等待。</p>
+      <p>是缅因唤醒了它：礁石海岸与高大的松林，漫长的冬雪与骤至的春天，四季流转间光影的变化。几年前，她提起画笔，开始潜心学习中国传统绘画。</p>
+      <p>如今，她在缅因乡间的家中作画，以水墨丹青落于宣纸之上，描绘牡丹与枝叶、树木与山石。古老的笔墨，在异乡生根：东方的笔意，新英格兰的光。</p>`,
+    contactLead: "如对画作感兴趣，或想打个招呼，",
+    contactLink: "欢迎来信",
+    place: "美国缅因州",
+    date: "日期",
+    medium: "材质",
+    size: "尺寸",
+    tbd: "待补充",
+    zoomHint: "点击画面可放大细看",
+    showFramed: "查看装裱效果",
+    showPainting: "返回画作",
+    inquire: "询问此作",
+    close: "关闭",
+    prev: "上一幅",
+    next: "下一幅",
+    allPaintings: "全部画作",
+    switchLang: "English",
+    homeTitle: "张磐 · 中国画作品 | 缅因",
+    homeDescription: "张磐的中国画作品：牡丹、梅花、山水与书法，纸本水墨设色，作于美国缅因州乡间。",
+    workTitleSuffix: "张磐",
+  },
+};

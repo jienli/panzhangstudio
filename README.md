@@ -1,11 +1,15 @@
 # 张磐 Zhang Pan — painting site
 
-Plain HTML/CSS/JS in `site/`, no build step. Every push to `main` publishes `site/` to
+Plain HTML/CSS/JS in `site/`. `node tools/build.js` turns it into the published site in
+`_site/`: a gallery page and one page per painting, in English (`/`) and Chinese (`/zh/`),
+each with its own title, description, link-preview tags and schema.org data, plus
+`sitemap.xml` and `robots.txt`. Every push to `main` builds and publishes to
 https://panzhangstudio.com via GitHub Pages (`.github/workflows/deploy.yml`).
 
-- **Preview:** `python3 -m http.server 8420 --directory site`, then open http://localhost:8420
-- **Edit text:** page wording (both languages) is in `STRINGS` at the top of `site/app.js`;
-  painting titles, dates and notes are in `site/works.js`.
+- **Preview:** `node tools/build.js && python3 -m http.server 8420 --directory _site`,
+  then open http://localhost:8420
+- **Edit text:** page wording (both languages) is in `site/strings.js`; painting titles,
+  dates and notes are in `site/works.js`. Shared HTML templates are in `site/render.js`.
 - **Contact email:** `SITE.contactEmail` in `site/works.js` (empty hides the contact links).
 
 ## Adding paintings

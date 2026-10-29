@@ -57,7 +57,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .nav { display: flex; align-items: center; gap: clamp(14px, 3vw, 32px); font-size: 17px; }
 .nav a { text-decoration: none; color: var(--ink-soft); transition: color .2s; }
 .nav a:hover { color: var(--ink); }
-.lang-toggle { display: flex; gap: 4px; align-items: baseline; font-size: 15px; color: var(--ink-faint); }
+.lang-toggle { text-decoration: none; display: flex; gap: 4px; align-items: baseline; font-size: 15px; color: var(--ink-faint); }
 .lang-toggle .sep { opacity: .5; }
 html[lang="zh"] .lang-toggle [data-lang="zh"],
 html[lang="en"] .lang-toggle [data-lang="en"] { color: var(--seal); font-weight: 600; }
@@ -87,7 +87,7 @@ html[lang="zh"] .tagline { font-style: normal; }
 }
 .cta:hover { background: var(--ink); color: var(--paper); }
 .hero-art { margin: 0; width: 100%; max-width: 540px; justify-self: center; container-type: inline-size; }
-.hero-img-btn { display: block; width: 100%; }
+.hero-img-btn { display: block; width: 100%; color: inherit; }
 .hero-art figcaption { margin-top: 14px; font-size: 15px; color: var(--ink-faint); text-align: right; }
 .vertical-poem {
   position: absolute; right: clamp(4px, 2vw, 36px); top: 50%; transform: translateY(-50%);
@@ -119,6 +119,7 @@ html[lang="zh"] h2 { font-family: var(--brush); letter-spacing: .12em; }
   animation: fade-in .6s both;
 }
 .card[hidden] { display: none; }
+a.card { color: inherit; text-decoration: none; }
 .card .framed { transition: transform .5s cubic-bezier(.2,.7,.2,1), box-shadow .5s; }
 .card:hover .framed {
   transform: translateY(-3px);
@@ -216,6 +217,7 @@ html[lang="zh"] .about-body p:first-of-type::first-letter { font-family: var(--b
 @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
 .v-close {
   position: absolute; top: 10px; right: 14px; z-index: 2;
+  display: grid; place-items: center; text-decoration: none;
   font-size: 34px; line-height: 1; color: var(--ink-soft); width: 44px; height: 44px;
 }
 .v-close:hover { color: var(--ink); }
@@ -231,8 +233,8 @@ html[lang="zh"] .about-body p:first-of-type::first-letter { font-family: var(--b
 .v-stage.zoomed .v-hint { display: none; }
 .v-info { padding: 64px 36px 28px; overflow-y: auto; display: flex; flex-direction: column; }
 .v-cat { margin: 0 0 10px; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--seal); }
-.v-info h3 { margin: 0; font-weight: 400; font-size: 38px; line-height: 1.15; }
-html[lang="zh"] .v-info h3 { font-family: var(--brush); font-size: 46px; letter-spacing: .08em; }
+.v-title { margin: 0; font-weight: 400; font-size: 38px; line-height: 1.15; }
+html[lang="zh"] .v-title { font-family: var(--brush); font-size: 46px; letter-spacing: .08em; }
 .v-subtitle { margin: 6px 0 0; color: var(--ink-faint); font-size: 18px; }
 .v-meta { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin: 28px 0; padding: 18px 0; border-block: 1px solid var(--line); font-size: 16px; }
 .v-meta dt { color: var(--ink-faint); }
@@ -249,8 +251,25 @@ html[lang="zh"] .v-info h3 { font-family: var(--brush); font-size: 46px; letter-
 .v-inquire:hover { color: var(--seal); }
 .v-inquire[hidden], .contact[hidden] { display: none; }
 .v-nav { margin-top: auto; padding-top: 28px; display: flex; align-items: center; justify-content: space-between; color: var(--ink-faint); font-size: 15px; }
-.v-nav button { font-size: 24px; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink-soft); transition: border-color .2s, color .2s; }
-.v-nav button:hover { border-color: var(--ink); color: var(--ink); }
+.v-nav a {
+  display: grid; place-items: center; text-decoration: none;
+  font-size: 24px; width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; color: var(--ink-soft); transition: border-color .2s, color .2s;
+}
+.v-nav a:hover { border-color: var(--ink); color: var(--ink); }
+
+/* each painting's own page: the same view, laid out in the page instead of over it */
+.work-page { padding: clamp(0px, 2vw, 32px) clamp(0px, 3vw, 40px) 40px; }
+.viewer.page { position: static; }
+.viewer.page .viewer-panel {
+  position: relative; inset: auto; min-height: calc(100vh - 140px);
+  box-shadow: 0 1px 2px rgba(60,45,30,.1), 0 18px 50px -24px rgba(60,45,30,.35); animation: none;
+}
+.viewer.page .v-stage img { max-height: calc(100vh - 200px); }
+
+.not-found { min-height: 100vh; display: grid; place-content: center; justify-items: center; gap: 4px; padding: 32px 16px; text-align: center; }
+.not-found h1 { margin: 16px 0 0; font-weight: 400; }
+.not-found p { margin: 0 0 12px; color: var(--ink-soft); }
+.not-found .cta { margin: 12px 6px 0; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
@@ -263,6 +282,9 @@ html[lang="zh"] .v-info h3 { font-family: var(--brush); font-size: 46px; letter-
   .v-stage img { max-height: calc(58vh - 32px); }
   .v-info { padding: 28px 20px 24px; overflow: visible; }
   .v-close { background: rgba(245,240,230,.85); border-radius: 50%; }
+  .work-page { padding: 0 0 24px; }
+  .viewer.page .viewer-panel { min-height: 0; grid-template-rows: auto auto; }
+  .viewer.page .v-stage img { max-height: 70vh; }
 }
 @media (max-width: 560px) {
   body { font-size: 17px; }
