@@ -87,6 +87,14 @@ html[lang="zh"] .tagline { font-style: normal; }
 }
 .cta:hover { background: var(--ink); color: var(--paper); }
 .hero-art { margin: 0; width: 100%; max-width: 540px; justify-self: center; container-type: inline-size; }
+/* a wide featured painting gets the larger share of the hero */
+.hero.hero--wide { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(28px, 4vw, 64px); }
+.hero--wide .hero-art { max-width: 920px; }
+@media (max-width: 1100px) {
+  .hero.hero--wide { grid-template-columns: 1fr; }
+  .hero--wide .hero-art { order: -1; }
+  .hero--wide .vertical-poem { display: none; }
+}
 .hero-img-btn { display: block; width: 100%; color: inherit; }
 .hero-art figcaption { margin-top: 14px; font-size: 15px; color: var(--ink-faint); text-align: right; }
 .vertical-poem {
@@ -111,9 +119,25 @@ html[lang="zh"] h2 { font-family: var(--brush); letter-spacing: .12em; }
 .filters button:hover { color: var(--ink); }
 .filters button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--seal); }
 
-.gallery { columns: 3 300px; column-gap: clamp(24px, 3vw, 48px); }
+/* Grid of 3 / 2 / 1 columns. Wide paintings span 2 columns, panoramic ones the full
+   width (data-span, set by the build from each image's shape). app.js packs cards of
+   different heights tightly by giving each a row span on a 4px row grid ("masonry");
+   without JS the grid still works, just with plain rows. */
+.gallery {
+  --cols: 3;
+  display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: clamp(28px, 4vw, 60px); align-items: start;
+}
+.gallery.masonry { grid-auto-rows: 4px; }
+.card[data-span="2"] { grid-column: span 2; }
+.card[data-span="full"] { grid-column: 1 / -1; }
+@media (max-width: 1000px) { .gallery { --cols: 2; } }
+@media (max-width: 620px) {
+  .gallery { --cols: 1; }
+  .card[data-span="2"] { grid-column: auto; }
+}
 .card {
-  break-inside: avoid; margin: 0 0 clamp(44px, 5vw, 72px);
+  margin: 0 0 clamp(44px, 5vw, 72px);
   display: block; width: 100%; text-align: left;
   container-type: inline-size;
   animation: fade-in .6s both;
@@ -289,7 +313,6 @@ html[lang="zh"] .v-title { font-family: var(--brush); font-size: 46px; letter-sp
 @media (max-width: 560px) {
   body { font-size: 17px; }
   .brand-name { display: none; }
-  .gallery { columns: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }

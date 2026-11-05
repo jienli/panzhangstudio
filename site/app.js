@@ -46,6 +46,67 @@ window.addEventListener("scroll", () => {
   $(".site-header").classList.toggle("scrolled", window.scrollY > 10);
 }, { passive: true });
 
+/* ---------- gallery layout ---------- */
+// Masonry packing on a grid of 4px rows. Paintings go, in list order, into the shortest
+// column (wide ones into the lowest pair of columns). A full-width painting waits until
+// the columns are roughly level, letting the next paintings fill the shorter columns
+// first, so it never leaves a hole above it. Recomputed when the gallery's width changes
+// or a filter is applied; without JS the gallery is a plain grid.
+const grid = $("#gallery-grid");
+const ROW = 4;
+function layoutGallery() {
+  if (!grid) return;
+  const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
+  const cards = [...grid.querySelectorAll(".card")].filter((c) => !c.hidden);
+  grid.classList.add("masonry");
+
+  // Measure each card at its final width.
+  const items = cards.map((c) => {
+    const want = c.dataset.span === "full" ? cols : Math.min(Number(c.dataset.span) || 1, cols);
+    c.style.gridColumn = `span ${want}`;
+    c.style.gridRow = "auto";
+    return { c, span: want };
+  });
+  for (const it of items) {
+    const h = it.c.getBoundingClientRect().height + parseFloat(getComputedStyle(it.c).marginBottom);
+    it.rows = Math.ceil(h / ROW);
+  }
+
+  const heights = new Array(cols).fill(0);
+  const place = (it) => {
+    let best = 0, bestTop = Infinity;  // leftmost run of columns whose tallest is lowest
+    for (let c = 0; c + it.span <= cols; c++) {
+      const top = Math.max(...heights.slice(c, c + it.span));
+      if (top < bestTop) { best = c; bestTop = top; }
+    }
+    it.c.style.gridColumn = `${best + 1} / span ${it.span}`;
+    it.c.style.gridRow = `${bestTop + 1} / span ${it.rows}`;
+    for (let c = best; c < best + it.span; c++) heights[c] = bestTop + it.rows;
+  };
+  const uneven = () => Math.max(...heights) - Math.min(...heights);
+
+  const queue = items.slice();
+  while (queue.length) {
+    let it = queue[0];
+    if (it.span === cols && cols > 1 && uneven() > 40) {
+      // Fill shorter columns with the next narrower painting that doesn't overshoot by much.
+      const room = Math.max(...heights) - Math.min(...heights);
+      const k = queue.findIndex((x) => x.span < cols && x.rows <= room * 1.35);
+      if (k > 0) it = queue[k];
+    }
+    queue.splice(queue.indexOf(it), 1);
+    place(it);
+  }
+}
+if (grid) {
+  let lastWidth = 0;
+  new ResizeObserver(([entry]) => {
+    const w = Math.round(entry.contentRect.width);
+    if (w !== lastWidth) { lastWidth = w; layoutGallery(); }
+  }).observe(grid);
+  if (document.fonts) document.fonts.ready.then(layoutGallery);
+}
+
 /* ---------- gallery filters ---------- */
 document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("click", () => {
   const f = b.dataset.filter;
@@ -53,6 +114,7 @@ document.querySelectorAll("[data-filter]").forEach((b) => b.addEventListener("cl
   document.querySelectorAll("#gallery-grid .card").forEach((c) => {
     c.hidden = f !== "all" && c.dataset.category !== f;
   });
+  layoutGallery();
 }));
 
 /* ---------- painting view (overlay or page) ---------- */

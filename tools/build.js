@@ -21,8 +21,8 @@ for (const f of ["works.js", "strings.js", "render.js"]) {
   vm.runInContext(fs.readFileSync(path.join(SRC, f), "utf8"), ctx, { filename: f });
 }
 const { SITE, WORKS, CATEGORIES, STRINGS, SITE_URL, esc, homePath, workPath, workTitle,
-        formatDate, framed, cardHTML, viewerHTML } = vm.runInContext(
-  "({ SITE, WORKS, CATEGORIES, STRINGS, SITE_URL, esc, homePath, workPath, workTitle, formatDate, framed, cardHTML, viewerHTML })", ctx);
+        formatDate, framed, cardHTML, viewerHTML, WIDE_RATIO } = vm.runInContext(
+  "({ SITE, WORKS, CATEGORIES, STRINGS, SITE_URL, esc, homePath, workPath, workTitle, formatDate, framed, cardHTML, viewerHTML, WIDE_RATIO })", ctx);
 
 // Width/height of a JPEG, read from its header (lets the browser reserve space before
 // images load, and tells link previews the image size).
@@ -157,6 +157,8 @@ function homePage(lang) {
   const t = STRINGS[lang];
   const fi = Math.max(0, WORKS.findIndex((w) => w.featured));
   const fw = WORKS[fi];
+  const [hw, hh] = size(fw.thumb);
+  const heroWide = hw / hh >= WIDE_RATIO;
   const used = [...new Set(WORKS.map((w) => w.category))];
   const filters = [["all", t.all], ...used.map((c) => [c, CATEGORIES[c][lang]])]
     .map(([k, label]) => `<button type="button" data-filter="${k}" aria-pressed="${k === "all"}">${esc(label)}</button>`).join("");
@@ -171,7 +173,7 @@ function homePage(lang) {
                 image: fw.image, ogType: "website", jsonld })
     + header(lang, homePath, true) + `
   <main id="top">
-    <section class="hero">
+    <section class="hero${heroWide ? " hero--wide" : ""}">
       <div class="hero-text">
         <p class="eyebrow">${esc(t.eyebrow)}</p>
         <h1>
@@ -182,7 +184,7 @@ function homePage(lang) {
         <a class="cta" href="#gallery">${esc(t.cta)}</a>
       </div>
       <figure class="hero-art">
-        <a class="hero-img-btn" href="${workPath(fw, lang)}" data-work="${esc(fw.id)}">${framed(fw, fi, lang, { lazy: false, size: size(fw.thumb) })}</a>
+        <a class="hero-img-btn" href="${workPath(fw, lang)}" data-work="${esc(fw.id)}">${framed(fw, fi, lang, { lazy: false, size: size(heroWide ? fw.image : fw.thumb), full: heroWide })}</a>
         <figcaption>${esc(lang === "zh" ? `《${fw.title.zh}》` : fw.title.en)}</figcaption>
       </figure>
       <p class="vertical-poem" aria-hidden="true">笔墨写心 · 山水寄情</p>

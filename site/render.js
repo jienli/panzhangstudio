@@ -34,19 +34,27 @@ function yearLabel(w, lang) {
 
 // Walnut frame + mat drawn around a plain image (styles in styles.css).
 // Each frame shows a different part of the wood texture, like real lumber.
-function framed(w, i, lang, { lazy = true, size = null } = {}) {
+function framed(w, i, lang, { lazy = true, size = null, full = false } = {}) {
   const ox = -((i * 377) % 1024), oy = -((i * 53) % 128);
   const dims = size ? ` width="${size[0]}" height="${size[1]}"` : "";
   return `<div class="framed" style="--ox:${ox}px;--oy:${oy}px">
     <div class="side top"></div><div class="side bottom"></div><div class="side left"></div><div class="side right"></div>
-    <div class="mat"><div class="bevel"><img src="/${esc(w.thumb || w.image)}" alt="${esc(workTitle(w, lang))}"${dims}${lazy ? ' loading="lazy"' : ""}></div></div></div>`;
+    <div class="mat"><div class="bevel"><img src="/${esc(full ? w.image : w.thumb || w.image)}" alt="${esc(workTitle(w, lang))}"${dims}${lazy ? ' loading="lazy"' : ""}></div></div></div>`;
+}
+
+// How many gallery columns a painting spans, from its shape (width / height).
+const WIDE_RATIO = 1.25, PANORAMA_RATIO = 1.75;
+function spanFor(size) {
+  if (!size) return "1";
+  const r = size[0] / size[1];
+  return r >= PANORAMA_RATIO ? "full" : r >= WIDE_RATIO ? "2" : "1";
 }
 
 function cardHTML(w, i, lang, size) {
   const title = lang === "zh"
     ? `<span class="zh">${esc(w.title.zh)}</span>`
     : `<span class="zh">${esc(w.title.zh)}</span>${esc(w.title.en)}`;
-  return `<a class="card" href="${workPath(w, lang)}" data-work="${esc(w.id)}" data-category="${esc(w.category)}">
+  return `<a class="card" href="${workPath(w, lang)}" data-work="${esc(w.id)}" data-category="${esc(w.category)}" data-span="${spanFor(size)}">
       ${framed(w, i, lang, { size })}
       <div class="card-cap"><span class="card-title">${title}</span><span class="card-year">${esc(yearLabel(w, lang))}</span></div>
     </a>`;

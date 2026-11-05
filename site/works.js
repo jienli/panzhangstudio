@@ -27,7 +27,41 @@ const img = (id) => ({ image: `images/${id}.jpg`, thumb: `images/${id}-sm.jpg` }
 
 const WORKS = [
   {
+    id: "crimson-peony", ...img("crimson-peony"),
+    category: "flowers",
+    title: { en: "Crimson Peony", zh: "红牡丹" },
+    date: null,
+    medium: COLOR_ON_PAPER, size: null,
+    note: {
+      en: "A large crimson peony bending on its stem toward a single bud, the petals shaded from deep red to almost white.",
+      zh: "一朵绯红牡丹垂首俯向花蕾，花瓣由深红渐至近白。",
+    },
+  },
+  {
+    id: "a-branch-of-spring", ...img("a-branch-of-spring"),
+    category: "flowers",
+    title: { en: "A Branch of Spring", zh: "一枝春" },
+    date: null,
+    medium: COLOR_ON_PAPER, size: null,
+    note: {
+      en: "A single shoot of red plum blossom rising from a broad, dry-brush branch.",
+      zh: "一枝红梅自枯笔横干上挺然而出。",
+    },
+  },
+  {
+    id: "luoshen-peony", ...img("luoshen-peony"),
+    category: "flowers",
+    title: { en: "Luoshen Peony", zh: "洛神" },
+    date: null,
+    medium: COLOR_ON_PAPER, size: null,
+    note: {
+      en: "Luoshen, the Goddess of the Luo River, is the name of a prized peony variety. A single bloom with two red buds above an old, twisting stem.",
+      zh: "“洛神”为名贵牡丹品种之名。一朵盛开，两颗红蕾，老干虬曲。",
+    },
+  },
+  {
     id: "bamboo-in-snow", ...img("bamboo-in-snow"),
+    featured: true,
     category: "flowers",
     title: { en: "Bamboo in Snow", zh: "雪竹" },
     date: null,
@@ -83,29 +117,6 @@ const WORKS = [
     },
   },
   {
-    id: "luoshen-peony", ...img("luoshen-peony"),
-    category: "flowers",
-    featured: true,
-    title: { en: "Luoshen Peony", zh: "洛神" },
-    date: null,
-    medium: COLOR_ON_PAPER, size: null,
-    note: {
-      en: "Luoshen, the Goddess of the Luo River, is the name of a prized peony variety. A single bloom with two red buds above an old, twisting stem.",
-      zh: "“洛神”为名贵牡丹品种之名。一朵盛开，两颗红蕾，老干虬曲。",
-    },
-  },
-  {
-    id: "crimson-peony", ...img("crimson-peony"),
-    category: "flowers",
-    title: { en: "Crimson Peony", zh: "红牡丹" },
-    date: null,
-    medium: COLOR_ON_PAPER, size: null,
-    note: {
-      en: "A large crimson peony bending on its stem toward a single bud, the petals shaded from deep red to almost white.",
-      zh: "一朵绯红牡丹垂首俯向花蕾，花瓣由深红渐至近白。",
-    },
-  },
-  {
     id: "spring-everywhere", ...img("spring-everywhere"),
     category: "flowers",
     title: { en: "Spring Everywhere", zh: "春意盎然" },
@@ -136,17 +147,6 @@ const WORKS = [
     note: {
       en: "A tall, narrow plum: a heavy ink trunk with fine branches of pale pink blossom reaching upward.",
       zh: "竖幅梅花，浓墨老干，细枝粉梅向上舒展。",
-    },
-  },
-  {
-    id: "a-branch-of-spring", ...img("a-branch-of-spring"),
-    category: "flowers",
-    title: { en: "A Branch of Spring", zh: "一枝春" },
-    date: null,
-    medium: COLOR_ON_PAPER, size: null,
-    note: {
-      en: "A single shoot of red plum blossom rising from a broad, dry-brush branch.",
-      zh: "一枝红梅自枯笔横干上挺然而出。",
     },
   },
   {
