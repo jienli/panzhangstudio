@@ -44,6 +44,32 @@ const size = (rel) => jpegSize(path.join(SRC, rel));
 
 const FONTS = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500&display=swap";
 
+// PostHog, cookieless: nothing is stored on the visitor's device and no banner is needed.
+// Each visit is tagged with the browser's time zone and language (approximate location,
+// since cookieless mode can't look up a country). Only runs on the real domain, so local
+// previews don't add test visits. Snippet from posthog.com/docs/integrate/snippet.
+const POSTHOG_DEFAULTS = "2026-08-30";
+function analytics() {
+  if (!SITE.posthogKey) return "";
+  return `<script>
+    if (location.hostname === "panzhangstudio.com") {
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init(${JSON.stringify(SITE.posthogKey)}, {
+      api_host: "https://us.i.posthog.com",
+      defaults: "${POSTHOG_DEFAULTS}",
+      cookieless_mode: "always",
+      disable_session_recording: true,
+      disable_surveys: true,
+    });
+    posthog.register({
+      time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      browser_language: navigator.language,
+      site_language: document.documentElement.lang,
+    });
+    }
+  </script>`;
+}
+
 const ARTIST = {
   "@type": "Person",
   name: "Zhang Pan",
@@ -83,6 +109,7 @@ function head({ lang, title, description, pathFor, image, ogType, jsonld }) {
   <link href="${FONTS}" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <script type="application/ld+json">${JSON.stringify(jsonld).replace(/</g, "\\u003c")}</script>
+  ${analytics()}
 </head>`;
 }
 

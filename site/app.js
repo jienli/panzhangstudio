@@ -6,6 +6,14 @@ const lang = document.documentElement.lang === "zh" ? "zh" : "en";
 const $ = (sel) => document.querySelector(sel);
 const indexOf = (id) => WORKS.findIndex((w) => w.id === id);
 
+/* ---------- analytics (PostHog, cookieless; set up in the page <head>) ---------- */
+function trackPainting(i, how) {
+  const w = WORKS[i];
+  if (window.posthog && w) {
+    posthog.capture("painting_viewed", { painting: w.id, title: w.title.en, title_zh: w.title.zh, category: w.category, how });
+  }
+}
+
 /* ---------- language preference ---------- */
 function savedLang() {
   try { return localStorage.getItem("lang"); } catch (e) { return null; }
@@ -45,6 +53,7 @@ const pageView = $(".viewer.page");
 let current = pageView ? indexOf(pageView.dataset.workPage) : -1;
 let framedView = false;
 const homeTitle = document.title;
+if (pageView) trackPainting(current, "page");
 
 function panel() { return (overlay && !overlay.hidden ? overlay : pageView).querySelector(".viewer-panel"); }
 
@@ -60,7 +69,10 @@ function openOverlay(i, push) {
   overlay.hidden = false;
   document.body.style.overflow = "hidden";
   render();
-  if (push) history.pushState({ work: WORKS[i].id }, "", workPath(WORKS[i], lang));
+  if (push) {
+    history.pushState({ work: WORKS[i].id }, "", workPath(WORKS[i], lang));
+    trackPainting(i, "opened");
+  }
   overlay.querySelector(".v-close").focus();
 }
 
@@ -82,6 +94,7 @@ function step(d) {
   framedView = false;
   render();
   history.replaceState({ work: WORKS[i].id }, "", workPath(WORKS[i], lang));
+  trackPainting(i, "browsed");
 }
 
 // Cards and the hero open the overlay (a plain click; new-tab clicks still follow the link).

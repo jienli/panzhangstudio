@@ -6,6 +6,8 @@
 const SITE = {
   // Address that receives inquiries. Leave empty to hide the contact links.
   contactEmail: "",
+  // PostHog project key (public, meant for web pages). Empty turns analytics off.
+  posthogKey: "phc_xNgQkyzQwnaqnC4jMzxanmjirdAftrZDhCrJPvGuhoSS",
 };
 
 const CATEGORIES = {
