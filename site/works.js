@@ -55,8 +55,8 @@ const WORKS = [
     date: "2026",
     medium: COLOR_ON_PAPER, size: null,
     note: {
-      en: "Crimson peonies hanging from a long branch, with two moths below. Inscribed with a classical couplet praising the peony as the loveliest flower under heaven, and dated 丙午七月 (the seventh lunar month of 2026). " + STUDY_NOTE.en,
-      zh: "长枝垂挂绯红牡丹，下有双蛾。题古人咏牡丹联句，款署丙午七月。" + STUDY_NOTE.zh,
+      en: "Crimson peonies open along a tall branch, with two moths above. Inscribed with a classical couplet praising the peony as the loveliest flower under heaven, and dated 丙午七月 (the seventh lunar month of 2026). " + STUDY_NOTE.en,
+      zh: "长枝上绯红牡丹盛开，上有双蛾。题古人咏牡丹联句，款署丙午七月。" + STUDY_NOTE.zh,
     },
   },
   {
@@ -66,8 +66,8 @@ const WORKS = [
     date: null,
     medium: COLOR_ON_PAPER, size: null,
     note: {
-      en: "The same hanging branch of peonies, left without an inscription. " + STUDY_NOTE.en,
-      zh: "同一垂枝牡丹构图，未题款。" + STUDY_NOTE.zh,
+      en: "The same branch of peonies and moths, left without an inscription. " + STUDY_NOTE.en,
+      zh: "同一牡丹双蛾构图，未题款。" + STUDY_NOTE.zh,
     },
   },
   {
