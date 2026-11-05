@@ -13,8 +13,8 @@
     { "id": "peerless-beauty-2",   "src": "photos/Oct21_2026_addition/18534.JPG", "rotate": 180 },
     { "id": "flowers-in-season-1", "src": "photos/Oct21_2026_addition/18535.JPG" },
     { "id": "flowers-in-season-2", "src": "photos/Oct21_2026_addition/18536.JPG" },
-    { "id": "bamboo-in-snow",      "src": "photos/nov05_2026_addition/18563.HEIC", "flatten": false,
-      "trim": [0.04, 0.025, 0.025, 0.025],
+    { "id": "bamboo-in-snow",      "src": "photos/nov05_2026_addition/18563.HEIC", "rotate": 270, "flatten": false,
+      "trim": [0.025, 0.025, 0.025, 0.04],
       "note": "the grey ground is an ink wash, not shadow; correcting it would erase the painting's streaks" },
 
     { "id": "peony-2024",          "src": "photos/503168690_4046881525566354_2410894879458283111_n.jpg", "box": [236, 249, 483, 563] },

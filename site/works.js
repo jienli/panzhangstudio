@@ -34,8 +34,8 @@ const WORKS = [
     medium: { en: "Ink and white on xuan paper", zh: "纸本水墨" },
     size: null,
     note: {
-      en: "Bamboo stems and leaves bend through a grey ink-wash sky, with snow flicked on in white. Marked with a single large character and the artist's seal.",
-      zh: "竹枝竹叶穿行于水墨渲染的灰色天幕间，以白色弹洒为雪。画面下方书一大字，钤画家印。",
+      en: "Bamboo rises through a grey ink-wash sky, its leaves bending under snow flicked on in white. Inscribed with a single large character, 竹 (bamboo), above the artist's seal.",
+      zh: "修竹挺立于水墨渲染的灰色天幕间，竹叶承雪低垂，以白色弹洒为雪。右下题一“竹”字，下钤画家印。",
     },
   },
   {
