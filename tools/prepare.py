@@ -1,8 +1,8 @@
 """Build the website's painting images from the source photos.
 
-For every painting in tools/images.json: rotate, even out the lighting and
-fold shading (tools/flatten.py), set the paper to warm white, trim to the
-sheet, and write a large and a small JPEG into site/images.
+For every painting in tools/images.json: read the photo (HEIC is fine), rotate,
+even out the lighting and fold shading (tools/flatten.py), set the paper to warm
+white, trim to the sheet, and write a large and a small JPEG into site/images.
 
 Usage:
   python tools/prepare.py            # all paintings
@@ -11,7 +11,9 @@ Usage:
 
 import json
 import os
+import subprocess
 import sys
+import tempfile
 
 import cv2
 import numpy as np
@@ -21,6 +23,20 @@ from flatten import flatten  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROT = {90: cv2.ROTATE_90_CLOCKWISE, 180: cv2.ROTATE_180, 270: cv2.ROTATE_90_COUNTERCLOCKWISE}
+
+
+SRGB = "/System/Library/ColorSync/Profiles/sRGB Profile.icc"
+
+
+def load(src):
+    """Read a photo as BGR. iPhone HEIC files are converted with macOS's sips, and
+    every photo is converted to sRGB (iPhones shoot in the wider Display P3, which
+    looks washed out if read as sRGB)."""
+    with tempfile.TemporaryDirectory() as tmp:
+        png = os.path.join(tmp, "photo.png")
+        subprocess.run(["sips", "-s", "format", "png", "-m", SRGB, src, "--out", png],
+                       check=True, capture_output=True)
+        return cv2.imread(png, cv2.IMREAD_COLOR)
 
 
 def resized(rgb, long_side):
@@ -46,7 +62,7 @@ def main():
     for work in cfg["works"]:
         if only and work["id"] not in only:
             continue
-        bgr = cv2.imread(os.path.join(ROOT, work["src"]), cv2.IMREAD_COLOR)
+        bgr = load(os.path.join(ROOT, work["src"]))
         if bgr is None:
             raise SystemExit(f"could not read {work['src']}")
         if "box" in work:  # pixel crop on the original, e.g. a painting inside a framed photo
@@ -58,7 +74,10 @@ def main():
 
         # Per-painting overrides for photos where full correction would touch the painting
         # itself (e.g. pale washes behind glare): see "strength"/"detail"/"crease" in images.json.
-        rgb = flatten(rgb, work.get("strength", 1.0), work.get("detail", 3.0), work.get("crease", 1.0), paper)[0]
+        # "flatten": false skips correction entirely, for paintings with no bare paper to
+        # measure the light from (e.g. a toned ink-wash ground).
+        if work.get("flatten", True):
+            rgb = flatten(rgb, work.get("strength", 1.0), work.get("detail", 3.0), work.get("crease", 1.0), paper)[0]
 
         if "box" not in work:
             t = cfg["default_trim"]

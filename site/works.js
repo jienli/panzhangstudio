@@ -11,7 +11,7 @@ const SITE = {
 };
 
 const CATEGORIES = {
-  flowers:     { en: "Flowers",     zh: "花卉" },
+  flowers:     { en: "Flowers & Plants", zh: "花木" },
   landscape:   { en: "Landscape",   zh: "山水" },
   calligraphy: { en: "Calligraphy", zh: "书法" },
 };
@@ -26,6 +26,18 @@ const STUDY_NOTE = {
 const img = (id) => ({ image: `images/${id}.jpg`, thumb: `images/${id}-sm.jpg` });
 
 const WORKS = [
+  {
+    id: "bamboo-in-snow", ...img("bamboo-in-snow"),
+    category: "flowers",
+    title: { en: "Bamboo in Snow", zh: "雪竹" },
+    date: null,
+    medium: { en: "Ink and white on xuan paper", zh: "纸本水墨" },
+    size: null,
+    note: {
+      en: "Bamboo stems and leaves bend through a grey ink-wash sky, with snow flicked on in white. Marked with a single large character and the artist's seal.",
+      zh: "竹枝竹叶穿行于水墨渲染的灰色天幕间，以白色弹洒为雪。画面下方书一大字，钤画家印。",
+    },
+  },
   {
     id: "flowers-in-season-2", ...img("flowers-in-season-2"),
     category: "flowers",
