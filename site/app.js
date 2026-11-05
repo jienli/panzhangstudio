@@ -14,6 +14,14 @@ function trackPainting(i, how) {
   }
 }
 
+// Clicks on an email link: the footer, or "Ask about this piece" on a painting.
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="mailto:"]');
+  if (!a || !window.posthog) return;
+  const id = a.closest(".viewer") ? WORKS[current]?.id : null;
+  posthog.capture("inquiry_clicked", { painting: id, where: id ? "painting" : "footer" });
+});
+
 /* ---------- language preference ---------- */
 function savedLang() {
   try { return localStorage.getItem("lang"); } catch (e) { return null; }
